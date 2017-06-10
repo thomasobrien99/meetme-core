@@ -26,6 +26,9 @@ app.use('*', (req, res) => {
   yelp.searchBusiness({ term: 'ice cream' })
   .then(results => {
     res.send(results);
+  })
+  .catch(err => {
+    res.send(err);
   });
 });
 
