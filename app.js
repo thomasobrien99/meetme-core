@@ -25,8 +25,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('*', (req, res) => {
   yelp.searchBusiness({ term: 'ice cream' })
   .then(results => {
-    eval(require('locus'));
-    console.log(results));
+    res.send(results));
   });
 });
 
