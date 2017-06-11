@@ -15,5 +15,8 @@
     "morgan": "~1.8.1",
     "node-yelp-api-v3": "^1.0.1",
     "serve-favicon": "~2.4.2"
+  },
+  "devDependencies": {
+    "locus": "^2.0.1"
   }
 }

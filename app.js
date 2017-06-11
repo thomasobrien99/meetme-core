@@ -11,9 +11,6 @@ const yelp = new Yelp({
   consumer_secret: 'yy9RTz6rMdxdmeORu45ULs9UnKcguW8qfB1ks6Xk0uPbwjxQrOx65ZYhXVcc4Z4E'
 });
 
-var index = require('./routes/index');
-var users = require('./routes/users');
-
 var app = express();
 
 app.use(logger('dev'));
@@ -22,8 +19,12 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('*', (req, res) => {
-  yelp.searchBusiness({ term: 'ice cream' })
+app.use('/api/businesses/search', (req, res) => {
+  yelp.searchBusiness({
+    latitude: Number(req.query.lat), 
+    longitude: Number(req.query.lng),
+    term: 'ice cream'
+  })
   .then(results => {
     res.send(results);
   })
@@ -34,6 +35,8 @@ app.use('*', (req, res) => {
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
+  eval(require('locus'))
+
   var err = new Error('Not Found');
   err.status = 404;
   next(err);
@@ -41,11 +44,13 @@ app.use((req, res, next) => {
 
 // error handler
 app.use((err, req, res, next) => {
+  eval(require('locus'))
+
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
-  // render the error page
+
   res.status(err.status || 500);
-  res.render('error');
+  res.send(500)
 });
 
 module.exports = app;
